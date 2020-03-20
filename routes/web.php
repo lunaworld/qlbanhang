@@ -25,3 +25,8 @@ Route::post('/addproduct', 'ProductController@addpost');
 //storage
 Route::get('/addstorage', 'StorageController@add');
 Route::get('/checkproduct', 'StorageController@check');
+Route::get('/updatekho', 'StorageController@update');
+
+//ajax-demo
+Route::get('/demoajax', 'StorageController@ajaxdemo');
+Route::get('/ajax', 'StorageController@ajax');

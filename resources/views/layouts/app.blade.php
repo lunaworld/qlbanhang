@@ -19,6 +19,11 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src ="{{asset('js/jquery-3.4.1.min.js')}}"></script>
+    <style>
+        td{
+            border:1px solid black !important;
+        }
+    </style>
 </head>
 <body>
     <div id="app">

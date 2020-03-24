@@ -13,12 +13,10 @@ $(document).ready(function(){
             type: 'GET',  // http method
             data: {},  // data to submit
             success: function (data) {
-                //$('p').append('status: ' + status + ', data: ' + data);
                 alert(data);
             },
             error: function (data) {
                     alert('error');
-                    //$('p').append('Error' + errorMessage);
             }
         });
     })

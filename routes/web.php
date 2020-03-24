@@ -30,3 +30,7 @@ Route::get('/updatekho', 'StorageController@update');
 //ajax-demo
 Route::get('/demoajax', 'StorageController@ajaxdemo');
 Route::get('/ajax', 'StorageController@ajax');
+
+//ban hang
+Route::get('/order-add', 'OrderController@orderadd');
+Route::get('/checkproduct', 'OrderController@checkproduct');

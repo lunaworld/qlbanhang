@@ -52,7 +52,7 @@ class StorageController extends Controller
     }
 
     public function ajax(Request $p_quest) {
-        echo 'ttt';
+        
     }
 
 }

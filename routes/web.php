@@ -33,4 +33,5 @@ Route::get('/ajax', 'StorageController@ajax');
 
 //ban hang
 Route::get('/order-add', 'OrderController@orderadd');
+Route::post('/addorder', 'OrderController@addnew');
 Route::get('/checkproduct', 'OrderController@checkproduct');

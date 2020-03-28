@@ -23,6 +23,13 @@
                     <td>Thanh Tien</td>
                 </tr> -->
             </tbody>
+            <tfooter>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td id ='total'></td>
+            </tfooter>
         </table>
         <button id = 'order-create'>tao don hang</button>
     </div>
@@ -40,6 +47,7 @@
 </div>
 <script>
 var soluong = 0;
+var total = 0;
 $(document).ready(function(){
     //truy xuat class
     $('.class1').css('background','red');
@@ -52,8 +60,6 @@ $(document).ready(function(){
             type: 'GET',  // http method
             data: {product_code:pc},  // data to submit
             success: function (data) {
-                console.log(data);
-                console.log(data.name);
                 $('#name').val(data.name);
                 $('#price').val(data.price);
                 //soluong la bien toan cuc khai bao o ngoai
@@ -98,11 +104,39 @@ $(document).ready(function(){
         chuoi += '<td>'+soluong+'</td>';
         chuoi += '<td>'+price*soluong+'</td>';
         chuoi += '</tr>';
+        total +=price*soluong;
+        $('#total').html(total);
         $('#tbody').html(chuoi);  
     })
 
     $('#order-create').click(function(){
-        alert('ttt');
+        var data = [];
+        var pre = $('#tbody tr');
+        for(let i = 0;i<pre.length;i++){
+            let product_code = $('#tbody tr').eq(i).find('td').eq(0).html();
+            let name = $('#tbody tr').eq(i).find('td').eq(1).html();
+            let price = $('#tbody tr').eq(i).find('td').eq(2).html();
+            let soluong = $('#tbody tr').eq(i).find('td').eq(3).html();
+            data.push({product_code:product_code,name:name,price:price,soluong:soluong});
+        }
+        let CRSF = $('meta[name="csrf-token"]').attr('content');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+        $.ajax({
+            url : '/addorder',//duong dan
+            type: 'POST',  // http method
+            data: {data:data,phone:'67655477723',nguoimuahang:'Anh A',money:total},  // data to submit
+            success: function (data) {
+                
+            },
+            error: function (data) {
+                //goi ajax that bai
+                    alert('error');
+            }
+        });
     })
 
 

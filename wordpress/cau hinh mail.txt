@@ -1,0 +1,23 @@
+WP Mail SMTP cua wpform
+cau hinh contact form
+cau hinh woocomerce
+adminminize
+admin menu editor
+
+
+SMTP Host: smtp.gmail.com
+Encryption: SSL
+Port: 465
+Auto TLS: On
+Authentication: On
+
+code add to function file
+add_filter('wp_mail_smtp_custom_options', function( $phpmailer ) {
+    return $phpmailer->SMTPOptions = array(
+        'ssl' => array(
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true
+        )
+    );
+});

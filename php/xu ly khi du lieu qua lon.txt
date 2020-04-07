@@ -1,0 +1,5 @@
+- dung chunk cua laravel de xu ly
+- xu ly da luong process
+- thay vi join cac bang lai voi nhau thi minh query mot bang truoc, roi dua vao du lieu query duoc, minh se query bang 
+thu 2, vd nhu minh query 10 record tu bang 1. roi ung voi tung record do minh lai query o bang tiep theo du lieu tuong ung
+voi record.

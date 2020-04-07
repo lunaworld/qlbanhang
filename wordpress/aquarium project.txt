@@ -1,0 +1,74 @@
+Page: Home, Gallery, Event, Booking, FeedBack
+Home Page:
+ + Image of sea creature
+ + well design logo : Nexus Aquarium
+
+Gallery:// bang Animal
+ +Image: Animal Image Name : -ImageName
+ +Info
+	+ID            : -IDAnimal
+	+ID            : -IDCategory
+	+Name : -NameAnimal
+	+Age : -Age
+	+Size: -Size
+	+Description : -Description
+ 
+ +Category //bang Category
+    +Species Infomation : -SpeciesInfomaton
+	+Name Category : -CategoryName
+    +ID            : -IDCategory 
+	+CategoryImage : -CategoryImage
+ 	
+Contact: Footer
+ + Mail can click to send mail
+ + GeoLocation to show Address // Hover: Location Image
+ + Time
+ + Phone
+ 
+ 
+Event:
+ + ID Event : -IDEvent
+ + Image Event : -ImageEvent
+ + Schedule
+    + Date: -StartDate
+	       -EndDate
+	+ Time: -StartTime
+		   -EndTime
+	+ Name Event : -NameEvent 
+	+ Description: -Description //ckEditor tuy chon mau
+	+ Age Allow: -AgeAllow
+	+ Event Price: -EventPrice
+	
+Event Booking 
+	ID Booking : -IDBooking
+   Contact Form
+		+ Person Infomation
+			+ Name : -NameCustomer
+			+ Phone : -Phone
+			+ Mail : -Mail
+			+ Address : -Address
+			+ Note : -Note
+			
+		+ Event Infomation  :
+			+ ID Event : -IDEvent
+			
+		show info to customer about what event they will book
+			+ Name Event : NameEvent
+			+ Event Price: EventPrice
+
+   Action: Save Customer Info // /*Send Mail*/
+ 
+Feed Back
+  +ID FeedBack : -IDFeedback
+  +Content : -Content
+  +Name : -Name
+  
+  
+  
+  -------------------------------------------------------------------------------------
+  +dựng môi trường
+  +model :1 buổi
+  +controller: 2 buổi
+  +view : 2 buổi
+  +geolocation : nữa buổi
+  +ckEditor : 1 buổi

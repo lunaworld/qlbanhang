@@ -50,6 +50,9 @@
                         <li class="nav-item">
                                 <a class="nav-link" href="/addstorage">Quản Lý Kho</a>
                         </li>
+                        <li class="nav-item">
+                                <a class="nav-link" href="/report">Bao Cao</a>
+                        </li>
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">

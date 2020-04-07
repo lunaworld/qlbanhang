@@ -35,3 +35,6 @@ Route::get('/ajax', 'StorageController@ajax');
 Route::get('/order-add', 'OrderController@orderadd');
 Route::post('/addorder', 'OrderController@addnew');
 Route::get('/checkproduct', 'OrderController@checkproduct');
+
+//report
+Route::get('/report', 'ReportController@index');

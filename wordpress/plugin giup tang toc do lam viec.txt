@@ -1,0 +1,14 @@
+﻿Advanced Custom Fields : giúp thêm custom field
+
+ninja form
+
+smtp mail
+
+salon booking system : hệ thống quản lý lịch hẹn của salon từ admin
+
+Simply Schedule Appointments : plugin giúp khách hàng đặt lịch
+
+G-translate: google translate website
+
+
+theme: flatsome

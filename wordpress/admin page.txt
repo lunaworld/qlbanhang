@@ -1,0 +1,7 @@
+Bang Tin
+quan ly bai viet : viet bai moi, danh muc, tat ca bai viet
+quan ly san pham : them san pham, danh muc, tat ca san pham woocomerce/
+quan ly trang : trang chu trang header trang footer / xoa di muc them trang
+quan ly giao dien: menu, widget/
+quan ly thanh vien: /
+cai dat tong quan: quan ly duong dan, contact form /

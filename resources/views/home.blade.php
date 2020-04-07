@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<?php 
+$imgname = 'file20200317015538.png';
+?>
 <div class="container">
+    <img src = "{{url('upload')}}/{{$imgname}}">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">

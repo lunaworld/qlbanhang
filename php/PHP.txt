@@ -1,0 +1,46 @@
+https://onedrive.live.com/redir?resid=179A5088F0B4C61A%213030&authkey=%21AG8TOQp53u4IFVo&page=View&wd=target%28Quick%20Notes.one%7C4417a1aa-66dd-434a-96ae-8240e0bfd23c%2FC%E1%BA%A5u%20h%C3%ACnh%20xdebug%20tr%C3%AAn%20Visual%20studio%7C74665aaa-7707-4041-b0fe-f0e65e3c7ab3%2F%29
+w3resource.com
+
+$a = [];
+$a = array();//khai bao mang a;
+$a[] = 1; //them 1 phan tu co gia tri 1 vao cuoi mang a
+
+// php class repository
+
+
+//5table ->5 class
+ - them obj
+ - sua obj
+ - xoa obj
+ - hien thi danh sach
+ - tim kiem
+ - chi tiet
+
+ - create function get data in model
+ - create view to display model
+ - create action to show view in controller
+
+//mvc : 
+ - create controller
+ - create view
+ - create action in controller to show view
+ - routing
+ - create model
+
+//codeignator
+ - tao form
+ - ckedtior(smart text) => form // search ckeditor into COdeigniter
+    + chon hinh trinh bay( upload hinh-ckfinder)
+ - upload file (image)
+    + image: doi ten truoc khi luu, chi luu ten ko luu duong dan thu muc//check img-size, timeout
+             //luu y luu thong tin image vao database truoc khi upload file. neu upload truoc chua chac da luu duoc thong tin
+    + tao thu muc luu
+    + hien duoc image
+ - ajax(post data => action = javascript/jquery)
+
+-wordpress programing
+
+
+file da chinh:
+view/ overtime_list.blade 
+view/plan/kehoach_thucte.blade

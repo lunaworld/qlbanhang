@@ -1,0 +1,822 @@
+﻿code to add menu to wordpress
+ 1/register ở file function
+   register_nav_menus( array(
+			'menu-1'=>'Header Menu',
+			'menu-2'=>'Footer Menu',
+	));
+ 2/ ở file theme thì thêm code xác định vị trí
+		<?php
+			wp_nav_menu( array(
+				'theme_location' => 'menu-1',
+			) );
+		?>
+         -------------------------------------------------------
+		<?php
+			wp_nav_menu( array(
+				'theme_location' => 'menu-2',
+			) );
+		?>
+
+ 3/ để thêm class cho custom menu 
+	wp_nav_menu( array(
+				'theme_location' => 'menu-2',
+				'container_class' => 'class1',
+			) );
+
+-----------------------------------------------------------------------------------------
+code để add custom logo
+    <?php
+			the_custom_logo();
+	?>
+
+-----------------------------------------------------------------------------------------	
+code loop post
+
+while ( have_posts() ) :
+					the_post();
+
+					/*
+					 * Include the Post-Type-specific template for the content.
+					 * If you want to override this in a child theme, then include a file
+				 	* called content-___.php (where ___ is the Post Type name) and that will be used instead.
+					 */
+					get_template_part( 'template-parts/content', get_post_type() );
+
+				endwhile;
+
+				the_posts_navigation();
+--------------------------------------------------------------------
+code đường dẫn
+
+<?php echo esc_url( home_url( '/' ) ); ?>
+echo esc_url( get_template_directory_uri() )
+
+....
+---------------------------------------------------------------------
+giả dụ có file template là home-nhahang.php
+code load template là:
+get_template_part( 'template-parts/home', 'nhahang' );
+
+---------------------------------------------------------------------
+code tạo widget
+class wpb_widget extends WP_Widget
+{
+
+    function __construct()
+    {
+        parent::__construct(
+
+            // Base ID of your widget
+            'wpb_widget',
+
+            // Widget name will appear in UI
+            __('WPBeginner Widget', 'wpb_widget_domain'),
+
+            // Widget description
+            array('description' => __('Sample widget based on WPBeginner Tutorial', 'wpb_widget_domain'), )
+        );
+    }
+
+    // Creating widget front-end
+
+    public function widget($args, $instance)
+    {
+        $title = apply_filters('widget_title', $instance['title']);
+
+        // before and after widget arguments are defined by themes
+        echo $args['before_widget'];
+        if (!empty($title))
+        echo $args['before_title'] . $title . $args['after_title'];
+
+        // This is where you run the code and display the output
+        echo __('Hello, World!', 'wpb_widget_domain');
+        echo $args['after_widget'];
+    }
+
+    // Widget Backend 
+    public function form($instance)
+    {
+        if (isset($instance['title'])) {
+            $title = $instance['title'];
+        } else {
+            $title = __('New title', 'wpb_widget_domain');
+        }
+        // Widget admin form
+        ?>
+	<p>
+    <label for="<?php echo $this->get_field_id('title'); ?>">
+        <?php _e('Title:'); ?></label>
+    <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
+	</p>
+	<?php 
+	}
+
+	// Updating widget replacing old instances with new
+	public function update($new_instance, $old_instance)
+	{
+   		$instance = array();
+    	$instance['title'] = (!empty($new_instance['title'])) ? strip_tags($new_instance['title']) : '';
+    	return $instance;
+	}
+} 
+
+---------------------------------------------------------------------------
+code dang ki widget-area voi wordpress
+   1/dang ki trong file function.php
+   if ( function_exists('register_sidebar') )
+      register_sidebar(array(
+      'id'          => 'footer_widget_1',
+      'name' => 'footer_widget_1',
+      'description' => __( 'footer widget 1', 'text_domain' ),
+      // 'before_widget' => '<div class = "widgetizedArea">',
+      // 'after_widget' => '</div>',
+      // 'before_title' => '<h3>',
+      // 'after_title' => '</h3>',
+      )
+    );
+   
+   2/thêm widget area vào vị trí chỉ định
+   <?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar("Name of Widgetized Area") ) : ?>
+   <?php endif;?>
+   
+-------------------------------------------------------------------------------
+---------------------------------PLUGIN----------------------------------------
+muon tao plugin thi tao 1 file ten-plugin.php trong thu muc plugin
+
+code dang ki plugin
+<?php
+/**
+ * @package Test-Plugin
+ * @version 1.7.1
+ */
+/*
+Plugin Name: Test Plugin
+Plugin URI: http://wordpress.org/plugins/hello-dolly/
+Description: this is the first test plugin
+Author: Luan Nguyen
+Version: 1.7.1
+Author URI: http://ma.tt/
+*/
+-------------------------------------------
+plugin hoạt động bằng cách viết các function trong file plugin
+có thể chèn function của plugin vào thẳng file theme hoặc dùng hook hoặc filter
+---------------------
+	cách hook function như đăng kí event trong ngôn ngữ script. các function hook được định nghĩa sẵn trong wp
+	add_action( 'admin_notices', 'said_something' ); // bắt sự kiện chạy hàm admin_notices() để chạy theo hàm said_something()
+	add_action( 'admin_init','add_style'); // admin_init chạy khi khởi tạo wordpress dùng hook này để đăng kí thông tin
+
+----------------------------------------------
+code để đăng kí file css và file script
+
+function add_style() {
+    wp_register_style('addstylefile', plugins_url('style.css',__FILE__ ));
+    wp_enqueue_style('addstylefile');
+    // wp_register_script( 'your_namespace', plugins_url('your_script.js',__FILE__ ));
+    // wp_enqueue_script('your_namespace');
+}
+
+//thêm file css vao trang admin
+add_action( 'admin_init','add_style');
+
+---------------------------------------------
+code để tự động send email mỗi khi có bài đăng mới
+	class emailer {
+		static function send($post_ID)  {
+		$friends = 'bob@example.org,susie@example.org';
+		mail($friends,"sally's blog updated",'I just put something on my blog: http://blog.example.com');
+		return $post_ID;
+		}
+	}
+	add_action('publish_post', array('emailer', 'send'));
+	
+---------------------------------tạo wordpress page bằng PHP------------------------------------------
+if ( ! function_exists( 'PostCreator' ) ) {
+
+	function PostCreator(
+		$name      = 'AUTO POST',
+		$type      = 'post',
+		$content   = 'DUMMY CONTENT',
+		$category  = array(1,2),
+		$template  = NULL,
+		$author_id = '1',
+		$status    = 'publish'
+	) {
+
+		define( POST_NAME, $name );
+		define( POST_TYPE, $type );
+		define( POST_CONTENT, $content );
+		define( POST_CATEGORY, $category );
+		define( POST_TEMPLATE, '' );
+		define( POST_AUTH_ID, $author_id );
+		define( POST_STATUS, $status );
+
+		if ( $type == 'page' ) {
+			$post      = get_page_by_title( POST_NAME, 'OBJECT', $type );
+			$post_id   = $post->ID;
+			$post_data = get_page( $post_id );
+			define( POST_TEMPLATE, $template );
+		} else {
+			$post      = get_page_by_title( POST_NAME, 'OBJECT', $type );
+			$post_id   = $post->ID;
+			$post_data = get_post( $post_id );
+		}
+
+		function hbt_create_post() {
+			$post_data = array(
+				'post_title'    => wp_strip_all_tags( POST_NAME ),
+				'post_content'  => POST_CONTENT,
+				'post_status'   => POST_STATUS,
+				'post_type'     => POST_TYPE,
+				'post_author'   => POST_AUTH_ID,
+				'post_category' => POST_CATEGORY,
+				'page_template' => POST_TEMPLATE
+			);
+			wp_insert_post( $post_data, $error_obj );
+		}
+		
+		//check if the page with same title has exit
+		if ( ! isset( $post ) ) {
+			add_action( 'admin_init', 'hbt_create_post' );
+			return $error_obj;
+		}
+
+	}
+}
+
+/* All available options for PostCreator()
+
+PostCreator( 'TITLE' , 'POST TYPE' , 'POST CONTENT' , 'POST CATEGORY' , 'TEMPLATE FILE NAME' , 'AUTHOR ID NUMBER' , 'POST STATUS');
+
+TITLE - HTML Stripped Out. Simple String.
+POST TYPE - Post type slug. Eg 'post' or 'page'. Custom Post Types are supported.
+POST CONTENT - Content of the Post/Page. HTML allowed.
+POST CATEGORY - An array of the integer ID's of the category/categories you want to link to your post
+TEMPLATE FILE NAME - File name of the template. Only for Pages. In the format 'file_name.php'.
+AUTHOR ID NUMBER - Integer value. Default is 1.
+POST STATUS - Available options; [ 'draft' | 'publish' | 'pending'| 'future' | 'private' | custom registered status ]
+
+If successful, PostCreator() returns nothing.
+If there is an error PostCreator() returns a WP_error object.
+
+*/
+
+PostCreator( 'go go go', 'page', 'With a sizable serving of Dolor. This was created using Harri Bell-Thomas\'s PostCreator function.' );
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------Code Custom Post Type----------------------------------------------------------
+Dựa vào cấu trúc của theme, thì mặc định custom post type sẽ hiển thị dựa theo code của file single.php trong theme.
+ Nếu bạn muốn nó hiển thị khác, thì cứ tạo một file tên là single-{slug-post-type}.php.
+ Như ví dụ này thì mình sẽ tạo file tên là single-sanpham.php để hiển thị nội dung trong post type riêng này.
+
+add_action( 'init', 'create_mobiles_type' );
+function create_mobiles_type() {
+    register_post_type( 'Mobiles',
+        array(
+            'labels' => array(
+                'name' => __( 'Mobiles' )-,
+                'singular_name' => __( 'Mobile' )
+            ),
+        // 'public' => true,
+		'has_archive' => true,
+		'supports' => array(
+			'title',
+			'editor',
+			'author',
+			'excerpt',
+			'thumbnail',
+			'custom-fields',
+			'revisions',),
+		'taxonomies' => array('category', 'post_tag')	
+		)
+		
+    );
+}
+register_taxonomy_for_object_type('category', 'Mobiles');
+register_taxonomy_for_object_type('post_tag', 'Mobiles');
+
+
+
+	//  global $wp_roles;
+	//  $wp_roles->add_cap( 'administrator', 'edit_datchos' );
+	//  $wp_roles->add_cap( 'administrator', 'read_datcho' );
+	//  $wp_roles->add_cap( 'administrator', 'read_datchos' );
+  // // $wp_roles->add_cap( 'administrator', 'edit_food_items' );
+   	
+}
+// add_action( 'init', 'setnewmeta' );
+// function setnewmeta() {
+//   add_meta_box("year_completed-meta", "Year Completed", "year_completed", "Event", "side", "low");
+ 
+// }
+// function year_completed(){
+//   global $post;
+//   $custom = get_post_custom($post->ID);
+//   $year_completed = $custom["year_completed"][0];
+
+// }
+
+
+--------------------------code set query post type to mobiles---------------------
+https://viblo.asia/p/tao-custom-post-type-trong-wordpress-Ljy5VrLM5ra
+add_filter( 'pre_get_posts', 'add_mobiles' );
+ 
+function add_mobiles( $query ) {
+ 
+    if ( is_home() && $query->is_main_query() )
+        $query->set( 'post_type', array( 'post', 'Mobiles') );
+ 
+    return $query;
+}
+
+$post_id = wp_insert_post(array (
+   'post_type' => 'your_post_type',
+   'post_title' => $your_title,
+   'post_content' => $your_content,
+   'post_status' => 'publish',
+   'comment_status' => 'closed',   // if you prefer
+   'ping_status' => 'closed',      // if you prefer
+));
+
+if ($post_id) {
+   // insert post meta
+   add_post_meta($post_id, $meta_key, $meta_value, $unique); //$unique kiểu boolean để xác định coi meta_key có phải là duy nhất ko
+   add_post_meta($post_id, '_your_custom_2', $custom2);
+   add_post_meta($post_id, '_your_custom_3', $custom3);
+}--++**
+
+
+-----------------------------------------code add post from front-end-------------------------------------------
+// lưu ý phải set author cho post được tạo nếu ko thì khi ko login wp sẽ ko thể biết được post thuộc author nào, khi đó thì bài post sẽ ko edit hay view được
+// $author_id = 1; // You can change it with your User ID
+//    $post = array(
+//        'post_title'    => $title,
+//        'post_content'  => $title,
+//        'post_status'   => 'draft',   
+//        'post_type'     => 'datcho'
+//        'post_author'     => $author_id 
+//    );
+
+https://wpshout.com/wordpress-submit-posts-from-frontend/
+
+lưu ý đặc biêt: tên của input ko được trùng với những từ thông dụng như : 'name','email','tel','day'
+	nếu ko sẽ bị lỗi redirect ra page not found
+
+//add short code
+//add_shortcode('redirestaurant', array($this, 'shortcode'));	
+	
+add_shortcode( 'wpshout_frontend_post', 'wpshout_frontend_post' );
+function wpshout_frontend_post() {
+	 wpshout_save_post_if_submitted();
+    ?>
+<div id="postbox">
+    <form id="new_post" name="new_post" method="post">
+
+    <p><label for="title">Title</label><br />
+        <input type="text" id="title" value="" tabindex="1" size="20" name="title" />
+    </p>
+
+    <p>
+        <label for="content">Post Content</label><br />
+        <textarea id="content" tabindex="3" name="content" cols="50" rows="6"></textarea>
+    </p>
+
+    <p><?php wp_dropdown_categories( 'show_option_none=Category&tab_index=4&taxonomy=category' ); ?></p>
+
+    <p><label for="post_tags">Tags</label>
+
+    <input type="text" value="" tabindex="5" size="16" name="post_tags" id="post_tags" /></p>
+
+    <?php wp_nonce_field( 'wps-frontend-post' ); ?>
+
+    <p align="right"><input type="submit" value="Publish" tabindex="6" id="submit" name="submit" /></p>
+    
+    </form>
+</div>
+    <?php
+}
+
+function wpshout_save_post_if_submitted() {
+    // Stop running function if form wasn't submitted
+    if ( !isset($_POST['title']) ) {
+        return;
+    }
+
+    // Check that the nonce was set and valid
+    if( !wp_verify_nonce($_POST['_wpnonce'], 'wps-frontend-post') ) {
+        echo 'Did not save because your form seemed to be invalid. Sorry';
+        return;
+    }
+
+    // Do some minor form validation to make sure there is content
+    if (strlen($_POST['title']) < 3) {
+        echo 'Please enter a title. Titles must be at least three characters long.';
+        return;
+    }
+    if (strlen($_POST['content']) < 100) {
+        echo 'Please enter content more than 100 characters in length';
+        return;
+    }
+
+    // Add the content of the form to $post as an array
+    $post = array(
+        'post_title'    => $_POST['title'],
+        'post_content'  => $_POST['content'],
+        'post_category' => $_POST['cat'], 
+        'tags_input'    => $_POST['post_tags'],
+        'post_status'   => 'draft',   // Could be: publish
+        'post_type' 	=> 'post' // Could be: `page` or your CPT
+    );
+    wp_insert_post($post);
+    echo 'Saved your post successfully! :)';
+}
+---------------------------------------------update post ---------------------------------------------------------
+		$my_post = array(
+			'ID'           => $ID,
+			'post_status'   => 'publish',
+		);
+	  
+	  // Update the post into the database
+		wp_update_post( $my_post );
+		
+
+-------------------------------------------Display Custom Post----------------------------------------------------
+<?php
+  $args = array(
+    'post_type'   => 'Event',
+    'post_status' => 'publish',
+   );
+ 
+  $testimonials = new WP_Query( $args );
+  if( $testimonials->have_posts() ) :
+  ?>
+  <div class = 'row'>
+    <?php
+      while( $testimonials->have_posts() ) :
+        $testimonials->the_post();
+        ?>
+          <div class="col-lg-4 col-sm-12">
+            <div class = 'hl-card'>
+            <?php echo get_the_post_thumbnail();?>
+            <p><strong><?php echo get_post_meta($post->ID,'date_time',true);?></strong></p>
+            <h1><?php echo get_the_title();?></h1>            
+            <p><?php echo get_post_meta($post->ID,'location',true);?></p>
+            <a class = 'learn-more' href = "<?php echo get_permalink($post->ID);?>">Learn More>>></a>
+            </div>
+          </div>
+        <?php
+      endwhile;
+      wp_reset_postdata();
+	  else :
+		  esc_html_e( 'No testimonials in the diving taxonomy!', 'text-domain' );
+		endif;
+    ?>
+
+----------------------------------------------Send Email----------------------------------------------------------
+	
+	$to = 'luannguyen1234t@outlook.com'; 
+		$subject = 'Testing sendmail.exe';
+		 $message = 'Hi, you just received an email using sendmail!'; 
+		 $headers = 'From: myoriginalid@gmail.com' . "\r\n" . 'Reply-To: sender@gmail.com' . "\r\n" . 'MIME-Version: 1.0' . "\r\n" . 'Content-type: text/html; charset=iso-8859-1' . "\r\n" . 'X-Mailer: PHP/' . phpversion(); 
+		 if(mail($to, $subject, $message, $headers)) {
+				echo "Email sent";
+			}
+		 else  {
+			 echo "Email sending failed";
+		 }
+		 
+----------------------------------------------Code tạo menu có dàn trang----------------------------------------------
+---worpdress có 2 biến global để hỗ trợ việc dàn trang là $wp_query và $paged
+---để biết trang đang được hiển thị mang số mấy wordpress sẽ căn cứ vào $paged, mỗi khi click link tạo bởi next_post_link
+---$paged trên url sẽ tự động tăng lên 1, tương tự khi click previous_post_link $paged sẽ tự động giảm đi 1
+---$paged được hiển thị dưới dạng biến var trên URL
+
+	echo '<div class="wrap">';
+	global $testimonials, $paged;
+	$paged = $_GET['paged'];//for some reason your $paged dont get value from wp_query
+		echo $paged;					// so you should take value manula from url
+		$args = array(
+			'post_type'   => 'datcho',
+			'showposts' => 3,
+			'orderby'=>'ID',
+			'paged' => $paged,
+			// 'post_status' => 'publish',
+	   	);
+		$temp = $testimonials;
+		$testimonials = null;
+	 	$testimonials = new WP_Query( $args );
+		if( $testimonials->have_posts() ) :
+			
+	  	?>
+	  	<div class = 'show-info-container'>
+		  <div class="show-info info-head">
+			<div>name</div>
+			<div>phone</div>
+			<div>email</div>
+			<div>date</div>
+			<div>time</div>
+			<div>table</div>
+			<div>status</div>
+			<div></div>
+
+			<!-- <div>link</div> -->
+		  </div>
+		  <form method = 'post' action = ''>
+		<?php
+		  while( $testimonials->have_posts() ) :
+			$testimonials->the_post();
+			$ID = get_the_ID();
+
+			do_something_with_button($ID);
+			?>
+			  <div class="show-info">	
+				<div><?php echo get_the_title();?></div>            	
+			  </div>
+			<?php
+			endwhile;
+			previous_posts_link('&laquo; Newer');
+			echo $testimonials->max_num_pages;
+			next_posts_link('Older &raquo;', $testimonials->max_num_pages);
+			$testimonials = null; $testimonials = $temp;
+		  wp_reset_query();
+		?>
+		</form>
+	  </div>
+	  <?php
+		else :
+		  esc_html_e( 'No testimonials in the diving taxonomy!', 'text-domain' );
+		endif;	
+	echo '</div>';
+	
+----------------------------register post status-----------------------------------------------------------
+function my_custom_post_status_confirm(){
+	register_post_status( 'confirm', array(
+		'label'                     => _x( 'confirm', 'post' ),
+		'public'                    => true,
+		'exclude_from_search'       => false,
+		'show_in_admin_all_list'    => true,
+		'show_in_admin_status_list' => true,
+		'label_count'               => _n_noop( 'Unread <span class="count">(%s)</span>', 'Unread <span class="count">(%s)</span>' ),
+	) );
+}
+add_action( 'init', 'my_custom_post_status_confirm' );
+
+--------------------------------------------------------------------------------------------------------------
+--------------------------function create new custom field----------------------------------------------------
+        ----------------------------------------------------------------------------------------------
+if ( !class_exists('myCustomFields') ) {
+ 
+    class myCustomFields {
+        /**
+        * @var  string  $prefix  The prefix for storing custom fields in the postmeta table
+        */
+        var $prefix = '_mcf_';
+        /**
+        * @var  array  $postTypes  An array of public custom post types, plus the standard "post" and "page" - add the custom types you want to include here
+        */
+        var $postTypes = array( "page", "post","voucher" );
+        /**
+        * @var  array  $customFields  Defines the custom fields available
+        */
+        var $customFields = array(
+            array(
+                "name"          => "block-of-text",
+                "title"         => "A block of text",
+                "description"   => "",
+                "type"          => "textarea",
+                "scope"         =>   array( "page" ),
+                "capability"    => "edit_pages"
+            ),
+            array(
+                "name"          => "short-text",
+                "title"         => "A short bit of text",
+                "description"   => "",
+                "type"          =>   "text",
+                "scope"         =>   array( "post" ),
+                "capability"    => "edit_posts"
+            ),
+            array(
+                "name"          => "checkbox",
+                "title"         => "Checkbox",
+                "description"   => "",
+                "type"          => "checkbox",
+                "scope"         =>   array( "post", "page" ),
+                "capability"    => "manage_options"
+            ),
+            array(
+                "name"          => "timeout",
+                "title"         => "time out",
+                "description"   => "time to end this voucher discount",
+                "type"          => "date",
+                "scope"         =>   array( "voucher" ),
+                "capability"    => "edit_posts"
+            ),
+            array(
+                "name"          => "totalallow",
+                "title"         => "total allow",
+                "description"   => "number voucher left in stock",
+                "type"          => "number",
+                "scope"         =>   array( "voucher" ),
+                "capability"    => "edit_posts"
+            )
+        );
+        /**
+        * PHP 4 Compatible Constructor
+        */
+        function myCustomFields() { $this->__construct(); }
+        /**
+        * PHP 5 Constructor
+        */
+        function __construct() {
+            add_action( 'admin_menu', array( $this, 'createCustomFields' ) );
+            add_action( 'save_post', array( $this, 'saveCustomFields' ), 1, 2 );
+            // Comment this line out if you want to keep default custom fields meta box
+            add_action( 'do_meta_boxes', array( $this, 'removeDefaultCustomFields' ), 10, 3 );
+        }
+        /**
+        * Remove the default Custom Fields meta box
+        */
+        function removeDefaultCustomFields( $type, $context, $post ) {
+            foreach ( array( 'normal', 'advanced', 'side' ) as $context ) {
+                foreach ( $this->postTypes as $postType ) {
+                    remove_meta_box( 'postcustom', $postType, $context );
+                }
+            }
+        }
+        /**
+        * Create the new Custom Fields meta box
+        */
+        function createCustomFields() {
+            if ( function_exists( 'add_meta_box' ) ) {
+                foreach ( $this->postTypes as $postType ) {
+                    add_meta_box( 'my-custom-fields', 'Custom Fields', array($this, 'displayCustomFields' ), $postType, 'normal', 'high' );
+                }
+            }
+        }
+        /**
+        * Display the new Custom Fields meta box
+        */
+        function displayCustomFields() {
+            global $post;
+            ?>
+            <div class="form-wrap">
+                <?php
+                wp_nonce_field( 'my-custom-fields', 'my-custom-fields_wpnonce', false, true );
+                foreach ( $this->customFields as $customField ) {
+                    // Check scope
+                    $scope = $customField[ 'scope' ];
+                    $output = false;
+                    foreach ( $scope as $scopeItem ) {
+                        switch ( $scopeItem ) {
+                            default: {
+                                if ( $post->post_type == $scopeItem )
+                                    $output = true;
+                                break;
+                            }
+                        }
+                        if ( $output ) break;
+                    }
+                    // Check capability
+                    if ( !current_user_can( $customField['capability'], $post->ID ) )
+                        $output = false;
+                    // Output if allowed
+                    if ( $output ) { ?>
+                        <div class="form-field form-required">
+                            <?php
+                            switch ( $customField[ 'type' ] ) {
+                                case "checkbox": {
+                                    // Checkbox
+                                    echo '<label for="' . $this->prefix . $customField[ 'name' ] .'" style="display:inline;"><b>' . $customField[ 'title' ] . '</b></label>&amp;nbsp;&amp;nbsp;';
+                                    echo '<input type="checkbox" name="' . $this->prefix . $customField['name'] . '" id="' . $this->prefix . $customField['name'] . '" value="yes"';
+                                    if ( get_post_meta( $post->ID, $this->prefix . $customField['name'], true ) == "yes" )
+                                        echo ' checked="checked"';
+                                    echo '" style="width: auto;" />';
+                                    break;
+                                }
+                                case "textarea":
+                                case "wysiwyg": {
+                                    // Text area
+                                    echo '<label for="' . $this->prefix . $customField[ 'name' ] .'"><b>' . $customField[ 'title' ] . '</b></label>';
+                                    echo '<textarea name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '" columns="30" rows="3">' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '</textarea>';
+                                    // WYSIWYG
+                                    if ( $customField[ 'type' ] == "wysiwyg" ) { ?>
+                                        <script type="text/javascript">
+                                            jQuery( document ).ready( function() {
+                                                jQuery( "<?php echo $this->prefix . $customField[ 'name' ]; ?>" ).addClass( "mceEditor" );
+                                                if ( typeof( tinyMCE ) == "object" &amp;&amp; typeof( tinyMCE.execCommand ) == "function" ) {
+                                                    tinyMCE.execCommand( "mceAddControl", false, "<?php echo $this->prefix . $customField[ 'name' ]; ?>" );
+                                                }
+                                            });
+                                        </script>
+                                    <?php }
+                                    break;
+                                }
+                                case "date": {
+                                    echo '<label for="' . $this->prefix . $customField[ 'name' ] .'"><b>' . $customField[ 'title' ] . '</b></label>';
+                                    echo '<input type="date" required name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" />';
+                                    break;
+                                }
+                                case "number": {
+                                    echo '<label for="' . $this->prefix . $customField[ 'name' ] .'"><b>' . $customField[ 'title' ] . '</b></label>';
+                                    echo '<input type="number" required name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" />';
+                                    break;
+                                }
+                                default: {
+                                    // Plain text field
+                                    echo '<label for="' . $this->prefix . $customField[ 'name' ] .'"><b>' . $customField[ 'title' ] . '</b></label>';
+                                    echo '<input type="text" required name="' . $this->prefix . $customField[ 'name' ] . '" id="' . $this->prefix . $customField[ 'name' ] . '" value="' . htmlspecialchars( get_post_meta( $post->ID, $this->prefix . $customField[ 'name' ], true ) ) . '" />';
+                                    break;
+                                }
+                            }
+                            ?>
+                            <?php if ( $customField[ 'description' ] ) echo '<p>' . $customField[ 'description' ] . '</p>'; ?>
+                        </div>
+                    <?php
+                    }
+                } ?>
+            </div>
+            <?php
+        }
+        /**
+        * Save the new Custom Fields values
+        */
+        function saveCustomFields( $post_id, $post ) {
+            if ( !isset( $_POST[ 'my-custom-fields_wpnonce' ] ) || !wp_verify_nonce( $_POST[ 'my-custom-fields_wpnonce' ], 'my-custom-fields' ) )
+                return;
+            if ( !current_user_can( 'edit_post', $post_id ) )
+                return;
+            if ( ! in_array( $post->post_type, $this->postTypes ) )
+                return;
+            foreach ( $this->customFields as $customField ) {
+                if ( current_user_can( $customField['capability'], $post_id ) ) {
+                    if ( isset( $_POST[ $this->prefix . $customField['name'] ] ) AND trim( $_POST[ $this->prefix . $customField['name'] ] ) ) {
+                        $value = $_POST[ $this->prefix . $customField['name'] ];
+                        // Auto-paragraphs for any WYSIWYG
+                        if ( $customField['type'] == "wysiwyg" ) $value = wpautop( $value );
+                        update_post_meta( $post_id, $this->prefix . $customField[ 'name' ], $value );
+                    } else {
+                        delete_post_meta( $post_id, $this->prefix . $customField[ 'name' ] );
+                    }
+                }
+            }
+        }
+ 
+    } // End Class
+ 
+} // End if class exists statement
+ 
+// Instantiate the class
+if ( class_exists('myCustomFields') ) {
+    $myCustomFields_var = new myCustomFields();
+}
+
+----------------------------------------them taxonomies-------------------------------------------------------------------------------------------
+add_action('init', 'create_brand');
+ 
+function create_brand() {
+    register_taxonomy('brand', 'post', array(
+            'label' => 'Brand',
+            'labels' => array(
+                'name'          => __('Brand'),
+                'singular_name' => __('Brand'),
+                'add_new_item'  => __('Add New Brand'),
+                'new_item'      => __('New Brand'),
+                'add_new'       => __('Add Brand'),
+                'edit_item'     => __('Edit Brand')
+            ),
+            'public' => true,
+            'hierarchical' => true
+        )
+    );
+}
+
+-----------------------------------display post type by taxonomy---------------------------------------------------------------------------------
+foreach($categories as $catt){
+            echo "<div class = 'cat-luan'>";
+                echo "<div><h1>$catt->name</h1></div>";
+                $args = array(
+                    'post_type'   => 'employ',
+                    'post_status' => 'publish',
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => 'job',
+                             'field' => 'slug',
+                            'terms' => array ($catt->name)
+                        )
+                    )
+                   ); 
+                $query = new WP_Query( $args );
+                if($query->have_posts()){
+                    ?>
+                    <div>
+                        <?php
+                            while($query->have_posts()){
+                                $query->the_post();
+                                    echo get_the_title();
+                            }
+                        ?>
+                    </div>
+                    <?php
+                }
+            echo "</div>";        
+        }

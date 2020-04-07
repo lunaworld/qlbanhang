@@ -1,0 +1,33 @@
+Tự học laravel
+bước 1: học căn bản html, css, php, mysql
+bước 2: cài đặt xampp
+bước 3: cài đặt composer
+bước 4: tạo project laravel mới bằng composer
+bước 5: tạo database(DB) mới dùng mysql ( dùng xampp phpmyadmin hoặc các phần mềm thao tác db)
+bước 6: cấu hình file .env để kết nối DB vào project
+bước 7: tìm hiểu mô hình MVC trong xampp
+bước 8: tìm hiểu auth trong laravel, tạo chức năng đăng nhập, tạo user căn bản bằng laravel
+bước 9: tìm hiểu route trong laravel, tạo route đầu tiên để xuất ra màn hình chữ hello world
+bước 10: tạo controller theo mô hình MVC của Laravel liên kết route đến controller. tạo function showhello trong controller rồi tạo route link thử đến function đó
+bước 11: tìm hiểu view trong Laravel, tạo view mới showhell, tạo route showhell, controller showhell rồi link 3 cái lại với nhau
+bước 12: tạo biến $test = 'show something'. tìm hiểu truyền biến $test xuống view rồi xuất biến đó ra màn hình dùng thẻ h1.
+bước 12: tạo bảng demo trong DB liên kết ở trên, insert dữ liệu cho bảng đó bằng phpmyadmin hoặc các chương trình tương tác DB
+bước 13: tìm hiểu Model trong Laravel, tạo model Demo, liên kết Model Demo với bảng demo ở bước 17
+bước 14: tìm hiểu hàm get trong eloquent của Laravel, dùng hàm get để lấy hết dữ liệu của Model ở bước 17 xuất ra màn hình
+bước 15: tạo route mới '/demo', controller 'demo', view 'demo', rồi liên kết 3 cái đó với Model demo ở trên tạo trang con /demo xuất toàn bộ dữ liệu từ bảng demo 
+
+bước 16: lên ý tưởng chương trình demo, lưu ý chương trình demo nên làm đơn giản chỉ đủ để hiểu mô hình MVC
+bước 17: vẽ các màn hình mô tả chức năng của demo trên giấy
+bước 18: dùng các chương trình như paint.net hoặc photoshop hoặc các chương trình thiết kế wireframe để vẽ wireframe cho demo
+bước 19: từ wireframe thiết kế thành cấu trúc DB, các bảng liên quan đến từng màn hình
+bước 20: tạo các table trong thiết kế ở trên vào DB
+bước 21: xem wireframe ở trên bắt đầu tạo route cho màn hình đầu tiên
+bước 22: tạo controller cho màn hình đầu tiên, tạo function để link route ở trên vào xuất thử chữ test. test thử xem route đã link đúng chưa
+bước 23: tạo view cho màn hình đầu tiên. link function tạo ở bước 22 vào để xem route có trỏ đến view vừa tạo không
+bước 24: sau khi route đã qua controller và trỏ đến view tương ứng, tiến hành đọc các data liên quan đến màn hình đang làm ở controller rồi truyền vào view
+bước 25: tiếp tục lặp lại các bước ở trên cho tới khi xong hết các màn hình. trong quá trình làm nếu liên quan đến tương tác DB thì search laravel eloquent + từ khóa ( insert, update, delete ..)
+
+bước 26: sau khi xong hết các màn hình ở trên thì tìm hiểu view layout của laravel. viết lại các view theo đúng chuẩn header, body, footer các file tách riêng
+bước 27: test demo fix các lỗi nếu có
+bước 28: lên ý tưởng về 1 sản phẩm đủ lớn
+bước 29: tiến hành làm sản phẩm lớn ở trên theo kiến thức đã học. nếu trong quá trình học gặp cái nào ko biết( real time chat, xuất exel ..etc) cứ tìm hiểu Laravel + từ khóa tương ứng

@@ -1,0 +1,77 @@
+<?php
+header("Content-type: application/octet-stream");
+header("Content-Disposition: attachment; filename=data.xls");
+header("Pragma: no-cache");
+header("Expires: 0");
+?>
+<?php
+$lists = array(
+             array(
+                'name' => 'Nobita',
+                'email' => 'nobitacnt@gmail.com',
+                'phone' => '0123.456.789',
+             ),
+             array(
+                'name' => 'Xuka',
+                'email' => 'xuka@gmail.com',
+                'phone' => '0222.333.444',
+             ),
+            array(
+                'name' => 'Chaien',
+                'email' => 'chaien@gmail.com',
+                'phone' => '0111.333.444',
+            ),
+)
+?>
+<meta charset="utf-8" />
+<table>
+    <thead>
+        <tr>
+            <td>Tên</td>
+            <td>Email</td>
+            <td>Số điện thoại</td>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($lists as $row):?>
+        <tr>
+            <td><?php echo $row['name']?></td>
+            <td><?php echo $row['email']?></td>
+            <td><?php echo $row['phone']?></td>
+        </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>    
+
+
+---------------------------Template to display any data to exel-----------------------------------------------
+// need to create a session data value name tenttt in the root file.
+<?php
+/*
+Template Name: exel
+*/
+session_start();
+header("Content-type: application/octet-stream");
+header("Content-Disposition: attachment; filename=data.xls");
+header("Pragma: no-cache");
+header("Expires: 0");
+?>
+<?php
+$var_value = $_SESSION['tenttt'];
+echo "<table>";
+foreach($var_value as $tt=> $arr){
+    if($tt == 0){
+        echo "<tr>";
+        foreach($arr as $key => $element){        
+            echo "<td>$key</td>";
+        }    
+        echo "</tr>";
+    };
+    echo "<tr>";
+    foreach($arr as $element){
+        
+        echo "<td>$element</td>";
+    }
+    echo "</tr>";
+}
+echo "</table>";

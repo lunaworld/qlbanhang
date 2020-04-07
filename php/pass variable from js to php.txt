@@ -1,0 +1,11 @@
+PHP is server side language and JS is client side.best way to do this is create a cookie using javascript and then read that cookie in PHP
+
+<script type="text/javascript">
+    document.cookie = "myJavascriptVar =12345";
+</script>
+
+<?php 
+   $phpVar =  $_COOKIE['myJavascriptVar'];
+
+   echo $phpVar;
+?>

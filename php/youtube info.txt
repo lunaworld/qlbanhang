@@ -1,0 +1,22 @@
+lop online tu can ban toi nang cao:
+buoi 1:
+- chon porfolio
+- gioi thieu cau truc html can ban
+
+
+
+Khóa Học laravel Từ Căn Bản HTML, CSS, JS, SQL, PHP
+Link Khóa Học: https://www.youtube.com/playlist?list=PL178NqReIwBCNUjVMOQ7UGJpaDXidZC_V
+Source Code : https://github.com/lunaworld/S191122
+
+Thông Tin Liên Hệ :
+facebook: https://www.facebook.com/profile.php?id=100044699430802
+sdt: M.S Nga: 0932552140
+landing page tham khảo : 
+http://findmatthew.com/?fbclid=IwAR3Fg1y-kQNr8_0HueDBIv0bZCa0XMxXYq9Bmftr86AOWvF-vWutu3uKo2I
+
+
+laravel,căn bản,css,html,thực hành,js,javascript,php,mysql,sản phẩm thực tế,landing page,css trick,reponsive,css order,thứ tự
+
+CSS TRICK : Tổng Hợp Các Thủ Thuật CSS hay
+Danh Sách : https://www.youtube.com/playlist?list=PL178NqReIwBAYyMl3Hfa5AKLD4gL7G3ZY

@@ -1,0 +1,8 @@
+vd:
+ - file megastore.zip se co them child la child-megastore.zip
+file child-megastore.zip se chua thong tin cac file cho phep thay doi khi wordpress tu dong update.
+ - de tranh truong hop tu dong update ta dung plugin de ngan ko cho wordpress update
+ - select php version de chinh lai kich thuoc file cho phep trong truong hop file tai len qua nang
+ - shopsetting: wocomerce sidebar
+ - layout setting: setting sidebar for blog page
+ - 
